@@ -6,6 +6,14 @@ This project is derived from the Java Terminator component in [`software-jessies
 
 The similarly named [`nelk114/terminator`](https://github.com/nelk114/terminator) is a separate, small C/X11 session-termination utility. It is not the terminal emulator used here and was not used to build this app.
 
+## Screenshots
+
+These screenshots show SQL*Plus output at the left edge and after scrolling horizontally to the right.
+
+![SQL*Plus output at the left edge](sqlplus1.png)
+
+![SQL*Plus output after horizontal scrolling](sqlplus2.png)
+
 The app uses the independent bundle identifier `org.jessies.TerminatorM4` and the configuration directory `~/.terminator-m4`.
 
 ## Build and use

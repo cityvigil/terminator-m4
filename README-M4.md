@@ -20,6 +20,14 @@ sqlplus /nolog
 
 应用使用单独的 `~/.terminator-m4` 配置和 terminfo 目录，不读取或覆盖旧 Terminator 的设置。
 
+## 功能截图
+
+下面展示 SQL*Plus 宽行在窗口左侧起点，以及水平滚动后查看右侧字段的效果。
+
+![SQL*Plus 输出起始位置](sqlplus1.png)
+
+![水平滚动后查看 SQL*Plus 宽行右侧字段](sqlplus2.png)
+
 ## 上游项目和 Fork 来源
 
 本项目基于 [`software-jessies-org/jessies`](https://github.com/software-jessies-org/jessies) 仓库中的 Java Terminator 项目。
