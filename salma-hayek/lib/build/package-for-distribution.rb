@@ -1,5 +1,9 @@
 #!/usr/bin/ruby -w
 
+# Terminator-M4 change (2026-10-22): add a native macOS app entry point and
+# isolated app identity/configuration for current Apple Silicon macOS.
+# This file remains under the upstream license; see the repository COPYING.
+
 require "fileutils.rb"
 require "pathname.rb"
 
@@ -23,10 +27,14 @@ def make_info_plist(app_contents_dir, machine_project_name, human_project_name, 
 <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
  <dict>
+  <key>CFBundleExecutable</key>
+  <string>Terminator</string>
+  <key>CFBundleDisplayName</key>
+  <string>Terminator M4</string>
   <key>CFBundleIconFile</key>
   <string>#{human_project_name}.icns</string>
   <key>CFBundleIdentifier</key>
-  <string>org.jessies.#{human_project_name}</string>
+  <string>org.jessies.TerminatorM4</string>
   <key>CFBundleName</key>
   <string>#{human_project_name}</string>
   <key>CFBundlePackageType</key>
@@ -248,14 +256,17 @@ if target_os() == "Darwin"
     # Apple doesn't let you give a path to a .icns file, and doesn't seem to always follow symbolic links, so we have to copy it into position.
     FileUtils.cp("#{resources_dir}/#{machine_project_name}/lib/#{human_project_name}.icns", resources_dir)
 
-    # Make a bogus start-up script.
-    script_name = "#{app_dir}/MacOS/#{human_project_name}"
+    # Use a native executable as the bundle entry point. LaunchServices on
+    # current macOS does not accept the shell script itself as CFBundleExecutable.
+    script_name = "#{app_dir}/MacOS/#{human_project_name}.sh"
     File.open(script_name, "w") {
         |file|
         file.puts("#!/bin/bash --login")
         
         file.puts("# Avoid upsetting /usr/bin/ruby if the user's installed their own (ruby: No such file to load -- ubygems (LoadError)).")
         file.puts("unset RUBYOPT")
+        file.puts('export TERMINATOR_DOT_DIRECTORY="${HOME}/.terminator-m4"')
+        file.puts('export TERMINFO="${TERMINATOR_DOT_DIRECTORY}/terminfo"')
         
         file.puts("# Find our Resources/ directory.")
         file.puts("resources=`/usr/bin/ruby -rpathname -e 'puts(Pathname.new(ARGV[0]).realpath().dirname().dirname() + \"Resources\")' \"$0\"`")
@@ -272,6 +283,11 @@ if target_os() == "Darwin"
         file.puts("\"$resources/salma-hayek/bin/ensure-suitable-mac-os-version.rb\" && exec \"$resources/#{machine_project_name}/bin/#{machine_project_name}\" \"$@\"")
     }
     system("chmod a+x #{script_name}")
+    launcher_source = "#{salma_hayek}/lib/build/macos-app-launcher.c"
+    launcher_binary = "#{app_dir}/MacOS/#{human_project_name}"
+    spawnWithoutShell(["clang", "-arch", "arm64", "-mmacosx-version-min=11.0", "-O2", launcher_source, "-o", launcher_binary])
+    app_bundle = "#{app_dir}/.."
+    spawnWithoutShell(["codesign", "--force", "--deep", "--sign", "-", app_bundle])
 end
 if target_os() == "Darwin" || target_os() == "Cygwin"
     # Copy our documentation.

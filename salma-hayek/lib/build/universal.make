@@ -2,6 +2,9 @@
 # Disable legacy make behavior.
 # ----------------------------------------------------------------------------
 
+# Terminator-M4 change (2026-10-22): raise the macOS deployment target to 11.0
+# for the Apple Silicon toolchain used by this build.
+
 # We used to disable suffix rules, but the default compilation rules are suffix
 # rules, and we want to use them in per-directory.make.
 #.SUFFIXES:
@@ -357,7 +360,7 @@ SHARED_LIBRARY_EXTENSION = $(SHARED_LIBRARY_EXTENSION.$(TARGET_OS))
 # The only reason for the choice of 10.9 is that on macOS 10.14 I was told that
 # I shouldn't be using libc++ without setting that as my minimum, and that not
 # using libc++ is deprecated. In 2018, no one is still using macOS 10.14.
-C_AND_CXX_FLAGS.Darwin += -mmacosx-version-min=10.9
+C_AND_CXX_FLAGS.Darwin += -mmacosx-version-min=11.0
 C_AND_CXX_FLAGS.Darwin += -stdlib=libc++
 # We should probably rewrite the code to use newer APIs, but I'm just here to
 # get macOS compiling again, so I'm punting this until someone tells us that

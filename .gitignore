@@ -1,3 +1,8 @@
 .generated/
 .out/
 /scm
+
+# Local app bundle and test data; publish source, not machine-specific output.
+/dist/
+/test-home/
+.DS_Store

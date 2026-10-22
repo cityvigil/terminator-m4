@@ -1,13 +1,17 @@
-# Terminator, Evergreen, lwm and friends
- 
-[Terminator](https://github.com/software-jessies-org/jessies/wiki/Terminator) is a cross-platform GPL terminal emulator with advanced features not yet found elsewhere.
+# Terminator M4
 
-[Evergreen](https://github.com/software-jessies-org/jessies/wiki/Evergreen) is a cross-platform GPL development environment that tries to be lightweight and language-agnostic yet functional.
+An Apple Silicon macOS build of the upstream Jessies Terminator, packaged as a separate app for viewing long SQL*Plus output lines with a horizontal scrollbar.
 
-lwm, the Lightweight Window Manager for the X Window System, provides enough features to allow the user to manage their windows, and no more. x11-extras offers a few other pieces of a minimalist desktop.
+This project is derived from the Java Terminator component in [`software-jessies-org/jessies`](https://github.com/software-jessies-org/jessies), starting from upstream commit [`fa4fbaff1e51af5f075b0d4aef0299774c004a1a`](https://github.com/software-jessies-org/jessies/commit/fa4fbaff1e51af5f075b0d4aef0299774c004a1a). The commit identifies the exact source snapshot used as the starting point; it is not a software version number. This project adds Apple Silicon/macOS launcher and packaging compatibility changes. See [`COPYING`](COPYING) and the upstream project for source and license history.
 
-These projects were formerly hosted at http://software.jessies.org/, then at https://code.google.com/archive/p/jessies/.
+The similarly named [`nelk114/terminator`](https://github.com/nelk114/terminator) is a separate, small C/X11 session-termination utility. It is not the terminal emulator used here and was not used to build this app.
 
-For prebuilt binaries, see [Downloads](https://github.com/software-jessies-org/jessies/wiki/Downloads).
+The app uses the independent bundle identifier `org.jessies.TerminatorM4` and the configuration directory `~/.terminator-m4`.
 
-Instructions for building from source are filed under [SalmaHayek](https://github.com/software-jessies-org/jessies/wiki/SalmaHayek#user-content-downloads--building-from-source).
+## Build and use
+
+See [README-M4.md](README-M4.md) for requirements, build steps, and local test notes. The generated `.app` and scratch test data are intentionally excluded from Git; build the app locally from source.
+
+## Dependencies and licenses
+
+The source tree is distributed under its existing licenses. The bundled Apple Java Extensions and Swing Worker libraries retain their accompanying license texts in `salma-hayek/lib/jars/`.
